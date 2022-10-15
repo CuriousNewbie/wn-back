@@ -1,11 +1,27 @@
 "use strict";
 require("dotenv").config();
+const cors = require("@fastify/cors");
 
 const path = require("path");
 const AutoLoad = require("@fastify/autoload");
 
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 module.exports = async function (fastify, opts) {
   // Place here your custom code!
+  await fastify.register(cors, {
+    origin: "http://127.0.0.1:5173",
+    credentials: true,
+  });
+  await fastify.addHook("onRequest", async () => {
+    await delay(500);
+  });
+  fastify.register(require("@fastify/cookie"), {
+    secret: process.env.cookie_secret,
+    hook: "onRequest",
+    parseOptions: {},
+  });
   await fastify.register(require("@fastify/swagger"), {
     routePrefix: "/docs",
     swagger: {
@@ -15,7 +31,7 @@ module.exports = async function (fastify, opts) {
         version: "0.1.0",
       },
 
-      host: "localhost",
+      host: "127.0.0.1:3000",
       schemes: ["http"],
       consumes: ["application/json"],
       produces: ["application/json"],
@@ -23,6 +39,7 @@ module.exports = async function (fastify, opts) {
 
     exposeRoute: true,
   });
+
   // Do not touch the following lines
 
   // This loads all plugins defined in plugins
