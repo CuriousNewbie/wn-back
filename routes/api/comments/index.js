@@ -37,7 +37,7 @@ module.exports = async function (fastify, opts) {
           },
           limit: {
             type: "integer",
-            minimum: 10,
+            minimum: 1,
             maximum: 30,
             default: 10,
           },

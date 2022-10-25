@@ -14,9 +14,7 @@ module.exports = async function (fastify, opts) {
     origin: "http://127.0.0.1:5173",
     credentials: true,
   });
-  await fastify.addHook("onRequest", async () => {
-    await delay(500);
-  });
+
   fastify.register(require("@fastify/cookie"), {
     secret: process.env.cookie_secret,
     hook: "onRequest",

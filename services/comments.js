@@ -37,6 +37,7 @@ const comments = (db) => {
       const res = await Promise.all([comments, commentsCount]);
       return { comments: res[0], num: res[1].count };
     } catch (error) {
+      console.log(error.message);
       throw new Error(error.message);
     }
   };

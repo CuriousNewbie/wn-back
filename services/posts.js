@@ -3,7 +3,7 @@ const fp = require("fastify-plugin");
 const posts = (db) => {
   const getPosts = async ({ feedType, limit, page, user, userId }) => {
     const selectPosts =
-      "SELECT posts.id,  title, date, content, comment_number, likes, dislikes, avatar,name FROM posts JOIN users ON author_id=users.id ";
+      "SELECT posts.id,  title, date, content, comment_number, likes, dislikes, avatar,name,users.id as author_id FROM posts JOIN users ON author_id=users.id ";
 
     const postsQuery = {
       best:
@@ -52,7 +52,7 @@ const posts = (db) => {
 
   const getPost = async (id, commentNumber, commentsPage) => {
     const post = db.one(
-      `Select posts.id,  title, date,content, comment_number, likes, dislikes, avatar,name from posts
+      `Select posts.id,  title, date,content, comment_number, likes, dislikes, avatar,name, users.id as author_id from posts
         join users on author_id=users.id
         WHERE posts.id=${id};`
     );
